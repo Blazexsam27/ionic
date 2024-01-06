@@ -1,0 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Finlandica&family=Nunito+Sans&display=swap');
+
+body{
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow-x: hidden;
+    font-family: 'Nunito Sans', sans-serif;
+}

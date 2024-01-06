@@ -1,0 +1,76 @@
+// Colors
+
+$text-color-white: #f1f2f6;
+$blue: #3742fa;
+$purple: #5352ed;
+$orange-red: #ff6348;
+$orange: #ff7f50;
+$lime-light: #7bed9f;
+$green: #2ed573;
+$text-black: #2f3542;
+
+$lavendar-grad: linear-gradient(to left, #87ceeb, #e6e6fa);
+$blue-purple-grad: linear-gradient(to left, $blue, $purple);
+$orange-red-grad: linear-gradient(to left, $orange, $orange-red);
+$lime-green-grad: linear-gradient(to left, $lime-light, $green);
+
+body::-webkit-scrollbar-track {
+  border: 1px solid $text-color-white;
+  background: linear-gradient(
+    78deg,
+    rgba(209, 184, 255, 1) 0%,
+    rgba(124, 124, 255, 1) 100%
+  );
+}
+
+body::-webkit-scrollbar {
+  width: 10px;
+  background-color: #f5f5f5;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: $green;
+}
+
+a {
+  text-decoration: none;
+}
+
+// Mixins
+@mixin common-dflex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin dflex-justify-start {
+  display: flex;
+  justify-content: start;
+}
+
+@mixin dflex-justify-end {
+  display: flex;
+  justify-content: end;
+}
+
+@mixin common-dflex-space-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@mixin common-dflex-space-between-no-align {
+  display: flex;
+  justify-content: space-between;
+}
+
+@mixin common-dflex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+@mixin common-dflex-column-space-between {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
