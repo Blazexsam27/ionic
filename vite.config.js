@@ -1,7 +1,9 @@
 import { fileURLToPath, URL } from "node:url";
 
-import { defineConfig } from "vite";
+import { defineConfig, loadEnv } from "vite";
 import vue from "@vitejs/plugin-vue";
+
+const env = loadEnv("", process.cwd());
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -9,6 +11,19 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),
+    },
+  },
+
+  server: {
+    host: true,
+    port: 3000,
+    strictPort: true,
+    proxy: {
+      "/api": {
+        target: env.VITE_BASE_SERVER_URL,
+        changeOrigin: true,
+        secure: false,
+      },
     },
   },
   css: {
@@ -19,3 +34,17 @@ export default defineConfig({
     },
   },
 });
+/*
+server: {
+    host: true,
+    port: 3000,
+    strictPort: true,
+    proxy: {
+      "/api": {
+        target: "http://localhost:8080",
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+  },
+*/

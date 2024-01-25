@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "@/views/Home.vue";
-import Test from "../components/IntroComponent/Test.vue";
-
+import Gallery from "@/views/Gallery.vue";
+import ErrorPage from "@/views/ErrorPage.vue";
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -11,9 +11,14 @@ const router = createRouter({
       component: Home,
     },
     {
-      path: "/test",
-      name: "Test",
-      component: Test,
+      path: "/gallery",
+      name: "gallery",
+      component: Gallery,
+    },
+    {
+      path: "/:catchAll(.*)",
+      name: "errorPage",
+      component: ErrorPage,
     },
   ],
 });
