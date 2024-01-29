@@ -28,10 +28,22 @@
 export default {
   name: "DesignCard",
   props: {
-    title: String,
-    price: String,
-    subTitle: String,
-    img: String,
+    title: {
+      default: "Title",
+      type: String,
+    },
+    price: {
+      default: "$100",
+      type: String,
+    },
+    subTitle: {
+      default: "Sub Title",
+      type: String,
+    },
+    img: {
+      default: "#",
+      type: String,
+    },
   },
 };
 </script>

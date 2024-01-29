@@ -13,6 +13,7 @@
     "@vue-stripe/vue-stripe": "^4.5.0",
     "axios": "^1.6.5",
     "firebase": "^10.7.1",
+    "intersection-observer": "^0.12.2",
     "oh-vue-icons": "^1.0.0-rc3",
     "sass": "^1.69.5",
     "vue": "^3.3.11",
