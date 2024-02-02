@@ -29,6 +29,9 @@ import {
   MdDownloading,
   HiViewGridAdd,
   SiJetpackcompose,
+  MdKeyboardarrowupSharp,
+  MdKeyboardarrowdownSharp,
+  MdArrowdropdown,
 } from "oh-vue-icons/icons";
 
 const app = createApp(App);
@@ -53,7 +56,10 @@ addIcons(
   BiStarFill,
   MdDownloading,
   HiViewGridAdd,
-  SiJetpackcompose
+  SiJetpackcompose,
+  MdKeyboardarrowupSharp,
+  MdKeyboardarrowdownSharp,
+  MdArrowdropdown
 );
 app.config.globalProperties.$firebase = firebase;
 app.use(router);

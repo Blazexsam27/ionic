@@ -109,4 +109,31 @@ a {
   gap: $gap;
 }
 
-// Properties
+// animation mixins
+@mixin accordion_animation(
+  $initHeight: 100px,
+  $finalHeight: 200px,
+  $identifier: "temp"
+) {
+  @keyframes accordion-expand-#{$identifier} {
+    from {
+      height: $initHeight;
+      opacity: 0;
+    }
+    to {
+      height: $finalHeight;
+      opacity: 1;
+    }
+  }
+
+  @keyframes accordion-collapse-#{$identifier} {
+    from {
+      height: $finalHeight;
+      opacity: 1;
+    }
+    to {
+      height: $initHeight;
+      opacity: 0;
+    }
+  }
+}

@@ -11,7 +11,7 @@ const router = createRouter({
       component: Home,
     },
     {
-      path: "/gallery",
+      path: "/gallery/:type",
       name: "gallery",
       component: Gallery,
     },
