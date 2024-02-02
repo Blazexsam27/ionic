@@ -28,10 +28,22 @@
 export default {
   name: "DesignCard",
   props: {
-    title: String,
-    price: String,
-    subTitle: String,
-    img: String,
+    title: {
+      default: "Title",
+      type: String,
+    },
+    price: {
+      default: "$100",
+      type: String,
+    },
+    subTitle: {
+      default: "Sub Title",
+      type: String,
+    },
+    img: {
+      default: "#",
+      type: String,
+    },
   },
 };
 </script>
@@ -42,7 +54,7 @@ export default {
   .design_card {
     @include boxshadowBottom;
     width: 100%;
-    height: 90%;
+    height: 85%;
 
     border-radius: 10px;
     position: relative;
@@ -74,7 +86,7 @@ export default {
   .card-info {
     width: 100%;
     height: 10%;
-
+    padding-top: 10px;
     .upper {
       @include dflex($justify: space-between, $align: normal);
       padding: 2px 10px;

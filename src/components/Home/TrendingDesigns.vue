@@ -62,6 +62,7 @@ export default {
   .explore {
     @include dflex;
     padding: 3rem 0;
+    margin-bottom: 2rem;
   }
 }
 </style>
