@@ -1,5 +1,5 @@
 <template>
-  <div class="design_card_container">
+  <div class="design_card_container" @click="this.click">
     <div class="design_card">
       <div class="star_downloads">
         <div class="indicators">
@@ -18,9 +18,9 @@
     <div class="card-info">
       <div class="upper">
         <span>{{ this.title }}</span>
-        <span>{{ this.price }}</span>
+        <span v-if="this.showPrice">{{ this.price }}</span>
       </div>
-      <div class="lower">{{ this.subTitle }}</div>
+      <div class="lower" v-if="this.showPrice">{{ this.subTitle }}</div>
     </div>
   </div>
 </template>
@@ -43,6 +43,14 @@ export default {
     img: {
       default: "#",
       type: String,
+    },
+    click: {
+      default: () => {},
+      type: Function,
+    },
+    showPrice: {
+      type: String,
+      default: true,
     },
   },
 };

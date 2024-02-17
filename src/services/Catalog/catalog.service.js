@@ -1,20 +1,19 @@
-import firebaseDb from "../../firebase";
+import { firestoreDb } from "../../firebase";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import {
   collection,
   addDoc,
   getDocs,
   where,
-  startAfter,
+  startAt,
   orderBy,
   limit,
   endBefore,
   query,
-  offset,
 } from "firebase/firestore";
 import dateTimeUtils from "@/utils/DateTimeUtils";
 
-class FirebaseService {
+class CatalogService {
   uploadToBucket = async (type = "website_assets", file, fileData) => {
     try {
       const date = dateTimeUtils.getUnixTimeStamp();
@@ -23,24 +22,25 @@ class FirebaseService {
 
       // uploading logic
       const response = await uploadBytes(storageRef, file);
-      const fileUrl = await getDownloadURL(response.url);
-
+      const fileUrl = await getDownloadURL(response.ref);
       if (type === "website_assets") {
         this.saveFileUrlToFirestore("WebsiteAssets", fileUrl, fileData);
       }
       return fileUrl;
     } catch (error) {
+      console.error("Error while uploading to bucket", error);
       throw new Error("Error while uploading to bucket", error);
     }
   };
 
   saveFileUrlToFirestore = async (collectionName, fileUrl, fileData) => {
     try {
-      const collectionRef = collection(firebaseDb, collectionName);
+      const collectionRef = collection(firestoreDb, collectionName);
       const unixTimeStamp = dateTimeUtils.getUnixTimeStamp();
 
       addDoc(collectionRef, { fileUrl, fileData, unixTimeStamp });
     } catch (error) {
+      console.error("Error occured while saving url to firestore", error);
       throw new Error("Error occured while saving url to firestore", error);
     }
   };
@@ -52,7 +52,7 @@ class FirebaseService {
     pageNo = 1
   ) => {
     try {
-      const collectionRef = collection(firebaseDb, "Catalog");
+      const collectionRef = collection(firestoreDb, "Catalog");
 
       const queryConstraints = [];
       if (filter !== "All")
@@ -66,7 +66,7 @@ class FirebaseService {
         ...queryConstraints,
         orderBy(sort),
         limit(pageSize),
-        offset(startIndex)
+        startAt(startIndex)
       );
 
       // Make firestore call
@@ -80,9 +80,10 @@ class FirebaseService {
 
       return { result, totalPages };
     } catch (error) {
+      console.error("Error occured while retreiving catalog", error);
       throw new Error("Error occured while retreiving catalog", error);
     }
   };
 }
 
-export default new FirebaseService();
+export default new CatalogService();
