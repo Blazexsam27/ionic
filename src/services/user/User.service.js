@@ -31,7 +31,7 @@ class UserService {
 
       if (result.length === 0) {
         // add this user to firestore
-        addDoc(collectionRef, {
+        await addDoc(collectionRef, {
           email: userData.email,
           displayName: userData.displayName,
           photoUrl: userData.photoURL ? userData.photoURL : "#default",

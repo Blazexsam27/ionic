@@ -1,35 +1,43 @@
-<template lang="">
+<template>
   <div class="base_view_container">
     <div class="user_profile">
       <div class="left">
         <div class="profile_pic">
-          <img :src="this.bundle_ad_bg" alt="user profile pic" />
+          <img :src="this.userData.profilePic" alt="user profile pic" />
         </div>
-        <div class="name">User Name</div>
-        <div class="email">myemail@gmail.com</div>
+        <div class="name">{{ this.userData.displayName }}</div>
+        <div class="email">{{ this.userData.email }}</div>
 
         <div class="btn_group">
           <div
-            class="catalog"
-            :class="{ active: this.selectedContent === 'catalog' }"
-            @click="this.handleContentChange('catalog')"
+            class="profile_info"
+            :class="{ active: this.selectedContent === 'profile' }"
+            @click="
+              () => this.handleRouteChange('/user_profile/1/profile', 'profile')
+            "
           >
-            Catalog
-          </div>
-          <div
-            class="wishlist"
-            :class="{ active: this.selectedContent === 'wishlist' }"
-            @click="this.handleContentChange('wishlist')"
-          >
-            Wishlist
+            Profile
           </div>
 
           <div
-            class="profile_info"
-            :class="{ active: this.selectedContent === 'information' }"
-            @click="this.handleContentChange('information')"
+            class="catalog"
+            :class="{ active: this.selectedContent === 'catalog' }"
+            @click="
+              () => this.handleRouteChange('/user_profile/1/catalog', 'catalog')
+            "
           >
-            Information
+            Catalog
+          </div>
+
+          <div
+            class="wishlist"
+            :class="{ active: this.selectedContent === 'wishlist' }"
+            @click="
+              () =>
+                this.handleRouteChange('/user_profile/1/wishlist', 'wishlist')
+            "
+          >
+            Wishlist
           </div>
         </div>
       </div>
@@ -43,35 +51,71 @@
 <script>
 import bundle_ad_bg from "../../assets/images/bundle_ad_bg.jpg";
 import UserCatalog from "./UserCatalog.vue";
+import ProfileInfo from "./ProfileInfo.vue";
+import UserWishlist from "./UserWishlist.vue";
+import localStorageUtils from "@/utils/LocalStorageUtils";
+
 export default {
   data() {
     return {
       bundle_ad_bg,
       selectedContent: "catalog",
       content: UserCatalog,
-      listingType: "Wishlist",
+      listingType: "Information",
+      userData: {
+        profilePic: "#",
+        displayName: "",
+        email: "",
+      },
     };
   },
+  watch: {
+    $route(to, from) {
+      this.handleContentRender();
+    },
+  },
   methods: {
-    handleContentChange(value) {
-      switch (value) {
-        case "catalog":
+    handleContentRender() {
+      console.log("clla", this.$route.name);
+      switch (this.$route.name) {
+        case "Profile":
+          this.content = ProfileInfo;
+          this.selectedContent = "profile";
+          break;
+        case "Catalog":
+          this.content = UserCatalog;
           this.selectedContent = "catalog";
-          this.listingType = "Catalog";
           break;
-        case "wishlist":
+        case "Wishlist":
+          this.content = UserWishlist;
           this.selectedContent = "wishlist";
-          this.listingType = "Wishlist";
-          break;
-
-        case "information":
-          this.selectedContent = "information";
-          break;
-
-        default:
           break;
       }
     },
+    // called when (catalog, wishlist, information) is clicked to change the button active state and redirect to new route
+    handleRouteChange(path, selected) {
+      console.log("called");
+      this.selectedContent = selected;
+      this.$router.push({ path });
+    },
+
+    // function to get basic information about the user
+    handleInitialDataPopulate() {
+      const user = localStorageUtils.getDataWithExpiry("user");
+      if (user) {
+        this.userData = {
+          displayName: user.displayName,
+          email: user.email,
+          profilePic: user.photoURL,
+        };
+      }
+    },
+  },
+  created() {
+    // render the right side content according to route
+    this.handleContentRender();
+    // populate intial data
+    this.handleInitialDataPopulate();
   },
 };
 </script>

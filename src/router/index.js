@@ -33,6 +33,23 @@ const router = createRouter({
       path: "/user_profile/:id",
       name: "userProfile",
       component: UserProfile,
+      children: [
+        {
+          path: "profile",
+          name: "Profile",
+          component: UserProfile,
+        },
+        {
+          path: "catalog",
+          name: "Catalog",
+          component: UserProfile,
+        },
+        {
+          path: "wishlist",
+          name: "Wishlist",
+          component: UserProfile,
+        },
+      ],
     },
     {
       path: "/:catchAll(.*)",

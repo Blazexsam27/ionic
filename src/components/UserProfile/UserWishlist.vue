@@ -1,6 +1,6 @@
 <template>
-  <div class="user_catalog">
-    <div class="header">My Catalog</div>
+  <div class="user_wishlist">
+    <div class="header">My Wishlist</div>
     <div class="cards_container">
       <div class="card">
         <DesignCard
@@ -31,8 +31,9 @@
 </template>
 <script>
 import DesignCard from "../Widgets/DesignCard.vue";
+
 export default {
-  name: "UserCatalog",
+  name: "UserWishlist",
 
   data() {
     return {
@@ -48,22 +49,25 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.user_catalog {
+.user_wishlist {
   @include dflex($justify: start, $align: center, $flex: column, $wrap: nowrap);
   width: 100%;
   height: 100%;
   margin-left: 2rem;
+
   .header {
     @include dflex($align: normal);
     @include header;
     width: 100%;
     margin-top: 1rem;
   }
+
   .cards_container {
     @include dflex($justify: start, $align: start, $gap: 1.5rem);
     width: 100%;
     height: 250px;
     margin-top: 1.5rem;
+
     .card {
       width: 30%;
       height: 100%;

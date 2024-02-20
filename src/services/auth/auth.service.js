@@ -26,7 +26,6 @@ class AuthService {
         console.log("Creds", user);
 
         // save the user information in database if not already saved.
-        userService.createUser(user);
         return user;
       })
       .catch((err) => {

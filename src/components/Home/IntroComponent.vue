@@ -3,7 +3,9 @@
 <template>
   <div class="intro-section-component">
     <nav class="navbar">
-      <div class="left">IONIC</div>
+      <router-link to="/" class="logo">
+        <div class="left">IONIC</div>
+      </router-link>
       <div class="right">
         <ul>
           <li>
@@ -48,9 +50,15 @@
             <span>{{ userProfile.displayName || "Profile" }}</span>
 
             <div class="dropdown" :class="{ open: !this.showDropdown }">
-              <span class="profile">Profile</span>
-              <span class="catalog">Catalog</span>
-              <span class="wishlist">Wishlist</span>
+              <router-link to="/user_profile/1/profile">
+                <span class="profile">Profile</span>
+              </router-link>
+              <router-link to="/user_profile/1/catalog">
+                <span class="catalog">Catalog</span>
+              </router-link>
+              <router-link to="/user_profile/1/wishlist">
+                <span class="wishlist">Wishlist</span>
+              </router-link>
               <span class="logout" @click="this.logout">Logout</span>
             </div>
           </li>
@@ -64,9 +72,9 @@
 <script>
 import NavbarDefaultContent from "./NavbarDefaultContent.vue";
 import authService from "../../services/auth/auth.service";
+import userService from "../../services/user/User.service";
 import cookiesUtils from "../../utils/CookiesUtils";
 import localStorageUtils from "../../utils/LocalStorageUtils";
-import userService from "../../services/user/User.service";
 export default {
   name: "IntroSectionComponent",
   props: {
@@ -104,9 +112,11 @@ export default {
           displayName,
           photoURL,
         };
-        localStorageUtils.setDataWithExpiry("user", userData, expiry);
-        window.location.reload();
         // if the user is registered then create a document in user collection in firebase
+        await userService.createUser(userData);
+        localStorageUtils.setDataWithExpiry("user", userData, expiry);
+
+        window.location.reload();
       } catch (error) {
         console.error("Error while register/login", error);
       }
@@ -114,7 +124,6 @@ export default {
     checkAuthentication() {
       const authToken = cookiesUtils.getFromCookies("accessToken");
       const userData = localStorageUtils.getDataWithExpiry("user");
-      console.log("AUTH ");
       if (authToken && userData) {
         this.userAuthenticated = true;
         this.userProfile = userData;
@@ -160,6 +169,10 @@ export default {
     padding: 0 3rem;
     color: $text-color-white;
 
+    .logo {
+      color: $text-color-white;
+      padding-top: 10px;
+    }
     .left {
       font-size: 2.5rem;
       font-weight: bold;
@@ -222,6 +235,9 @@ export default {
             border-radius: 7px;
             color: $orange-red;
             overflow: hidden;
+            a {
+              color: $orange-red;
+            }
             span {
               transition: 0.4s;
               &:hover {
