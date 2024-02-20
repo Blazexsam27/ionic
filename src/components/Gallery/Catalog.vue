@@ -23,6 +23,7 @@
           title="Sample Design"
           subTitle="Fullstack responsive design"
           price="59"
+          :click="() => this.navigateToDetailsPage('10')"
         />
       </div>
 
@@ -31,6 +32,7 @@
           title="Sample Design"
           subTitle="Fullstack responsive design"
           price="59"
+          :click="() => this.navigateToDetailsPage('11')"
         />
       </div>
 
@@ -39,6 +41,7 @@
           title="Sample Design"
           subTitle="Fullstack responsive design"
           price="59"
+          :click="() => this.navigateToDetailsPage('12')"
         />
       </div>
 
@@ -47,6 +50,7 @@
           title="Sample Design"
           subTitle="Fullstack responsive design"
           price="59"
+          :click="() => this.navigateToDetailsPage('13')"
         />
       </div>
     </div>
@@ -61,8 +65,17 @@ export default {
   },
   data() {
     return {
-      sortDropdownActive: false,
+      sortDropdownActive: true,
     };
+  },
+  methods: {
+    navigateToDetailsPage(id) {
+      const type = this.$route.params.type;
+      // const id = this.$route.params.id;
+
+      console.log("Type", type, "Id", id);
+      this.$router.push(`/gallery/${type}/${id}`);
+    },
   },
 };
 </script>

@@ -22,11 +22,9 @@ export default {
 <style lang="scss" scoped>
 .curve_button {
   @include dflex;
-  min-width: 150px;
-  min-height: 35px;
 
-  width: fit-content;
-  height: fit-content;
+  width: 100%;
+  height: 100%;
   color: $text-black-08;
   cursor: pointer;
 
@@ -49,9 +47,10 @@ export default {
 
   width: fit-content;
   height: fit-content;
+  border-radius: 1px solid $text-color-white;
 
   padding: 2px 10px;
-  font-size: 14px;
+  font-size: inherit;
   border-radius: 20px;
   cursor: pointer;
 

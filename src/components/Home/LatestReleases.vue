@@ -17,7 +17,9 @@
           <div class="subheader">
             The best and most popular themes are here!
           </div>
-          <CurveButton text="Browse More" />
+          <div class="browse_button_container">
+            <CurveButton text="Browse More" />
+          </div>
         </div>
       </div>
       <div class="right">

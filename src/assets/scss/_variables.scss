@@ -1,5 +1,6 @@
-// Colors
+@import url("https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
+// Colors
 $text-color-white: #f1f2f6;
 $blue: #3742fa;
 $purple: #5352ed;
@@ -48,7 +49,12 @@ $purple-blue-grad: linear-gradient(to right, $blue, $purple);
 $red-orange-grad: linear-gradient(to right, $orange, $orange-red);
 $green-lime-grad: linear-gradient(to right, $lime-light, $green);
 
-$text-shadow: 0.8px 0.5px 0.5px black;
+$text-shadow: 0.8px 0.5px 0.5px $text-black-08;
+$text-shadow-08: 0.5px 0.3px 0.3px $text-black-08;
+
+// fonts
+
+$font1: "Barlow", sans-serif;
 
 body::-webkit-scrollbar-track {
   border: 1px solid $text-color-white;
@@ -81,31 +87,46 @@ a {
   box-shadow: 0px 5px 5px -1px $color;
 }
 
-@mixin header($fsize: 2.5rem, $color: $text-black-08, $shadow: $text-shadow) {
-  font-size: $fsize;
-  font-weight: 600;
-  color: $color;
-  letter-spacing: 1.2px;
-  text-shadow: $shadow;
-}
-
-@mixin subheader(
-  $fsize: 1.3rem,
-  $color: $text-black-05,
-  $shadow: $text-shadow
+@mixin header(
+  $fsize: 2.5rem,
+  $color: $text-black-08,
+  $shadow: $text-shadow,
+  $transform: uppercase
 ) {
   font-size: $fsize;
   font-weight: 600;
   color: $color;
   letter-spacing: 1.2px;
   text-shadow: $shadow;
+  text-transform: $transform;
 }
 
-@mixin dflex($justify: center, $align: center, $flex: row, $gap: 1rem) {
+@mixin subheader(
+  $fsize: 1.3rem,
+  $color: $text-black-05,
+  $shadow: $text-shadow,
+  $transform: none
+) {
+  font-size: $fsize;
+  font-weight: 600;
+  color: $color;
+  letter-spacing: 1.2px;
+  text-shadow: $shadow;
+  text-transform: $transform;
+}
+
+@mixin dflex(
+  $justify: center,
+  $align: center,
+  $flex: row,
+  $gap: 1rem,
+  $wrap: nowrap
+) {
   display: flex;
   justify-content: $justify;
   align-items: $align;
   flex-direction: $flex;
+  flex-wrap: $wrap;
   gap: $gap;
 }
 
