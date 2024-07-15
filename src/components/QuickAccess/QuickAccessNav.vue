@@ -2,7 +2,7 @@
   <div class="quick_access_nav_container">
     <nav>
       <router-link to="/gallery/all">All</router-link>
-      <router-link to="/gallery/dashboard">Dasboards</router-link>
+      <router-link to="/gallery/dashboard">Dashboards</router-link>
       <router-link to="/gallery/landging_pages">Landing Pages</router-link>
       <router-link to="/gallery/free_templates">Free Templates</router-link>
       <router-link to="/gallery/premium_templates"

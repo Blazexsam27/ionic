@@ -14,45 +14,99 @@ import {
 import dateTimeUtils from "@/utils/DateTimeUtils";
 
 class CatalogService {
-  uploadToBucket = async (type = "website_assets", file, fileData) => {
+  /**
+   *
+   * @param {string} type
+   * @param {File} file
+   * @param {Object} fileData
+   * @returns {string} fileUrl
+   */
+
+  // website_assets refers to the required images, thumbnails of the website.
+  uploadToBucket = async (type = "website_assets", files, fileData) => {
     try {
+      const { webFile, thumbnails } = files;
       const date = dateTimeUtils.getUnixTimeStamp();
       const storage = getStorage();
-      const storageRef = ref(storage, `${date}_${file.name}`);
+      const storageRef = ref(storage, `${date}_${webFile.name}`);
 
-      // uploading logic
-      const response = await uploadBytes(storageRef, file);
-      const fileUrl = await getDownloadURL(response.ref);
-      if (type === "website_assets") {
-        this.saveFileUrlToFirestore("WebsiteAssets", fileUrl, fileData);
+      // uploading the web files first
+      const response = await uploadBytes(storageRef, webFile);
+      const webfileUrl = await getDownloadURL(response.ref);
+
+      // upload the thumbnails of the website, (folder name: <date_file>.<file_name>_thumbnails)
+      let thumbnailUrls = [];
+      for (let thumbnail of thumbnails) {
+        const thumbnailStorageRef = ref(
+          storage,
+          `${date}_${webFile.name}_thumbnails/${thumbnail.name}`
+        );
+        const thumbnailUploadResponse = await uploadBytes(
+          thumbnailStorageRef,
+          thumbnail
+        );
+
+        const url = await getDownloadURL(thumbnailUploadResponse.ref);
+        thumbnailUrls.push(url);
       }
-      return fileUrl;
+
+      console.log("thumbnail---", thumbnailUrls);
+
+      if (type === "website_assets") {
+        this.saveFileUrlToFirestore(
+          "WebsiteAssets",
+          { webfileUrl, thumbnailUrls },
+          fileData
+        );
+      }
+      return { webfileUrl, thumbnailUrls };
     } catch (error) {
       console.error("Error while uploading to bucket", error);
       throw new Error("Error while uploading to bucket", error);
     }
   };
 
-  saveFileUrlToFirestore = async (collectionName, fileUrl, fileData) => {
+  /**
+   *
+   * @param {string} collectionName
+   * @param {string} fileUrl
+   * @param {Object} fileData
+   */
+
+  // Once the website assets are saved to firebase databse, its generated url will be stored to desired
+  // firestore object.
+  saveFileUrlToFirestore = async (collectionName, filesUrl, fileData) => {
     try {
       const collectionRef = collection(firestoreDb, collectionName);
       const unixTimeStamp = dateTimeUtils.getUnixTimeStamp();
 
-      addDoc(collectionRef, { fileUrl, fileData, unixTimeStamp });
+      addDoc(collectionRef, { filesUrl, fileData, unixTimeStamp });
     } catch (error) {
       console.error("Error occured while saving url to firestore", error);
       throw new Error("Error occured while saving url to firestore", error);
     }
   };
 
-  getCatalog = async (
+  /**
+   *
+   * @param {string} filter
+   * @param {string} sort
+   * @param {number} pageSize
+   * @param {number} pageNo
+   * @returns { result, totalPages }
+   */
+
+  // Catalog refers to the complete zip file of the project along with essential data like
+  // filename, thumbnail urls, file urls, file description etc.
+  getWebsites = async (
     filter = "All",
-    sort = "mostDownloads",
+    sort = "unixTimeStamp",
+    itemsPerPage = 5,
     pageSize = 20,
     pageNo = 1
   ) => {
     try {
-      const collectionRef = collection(firestoreDb, "Catalog");
+      const collectionRef = collection(firestoreDb, "WebsiteAssets");
 
       const queryConstraints = [];
       if (filter !== "All")
@@ -69,6 +123,7 @@ class CatalogService {
         startAt(startIndex)
       );
 
+      console.log("query", q);
       // Make firestore call
       const querySnapshot = await getDocs(q);
       let result = [];

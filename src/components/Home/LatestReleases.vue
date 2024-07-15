@@ -24,11 +24,12 @@
       </div>
       <div class="right">
         <div class="upper_row">
-          <div>
+          <div v-for="item of websites">
             <DesignCard
-              title="Material Dashboard Design"
+              :title="item.fileData.fileName"
               subTitle="Premium 5 dashboard templates"
-              price="$29"
+              :price="item.fileData.price"
+              :img="item.filesUrl?.thumbnailUrls[0]"
             />
           </div>
           <div>
@@ -63,6 +64,7 @@
 import DesignCard from "../Widgets/DesignCard.vue";
 import latest_release_bg from "../../assets/images/latest_release_bg.jpg";
 import CurveButton from "../Widgets/CurveButton.vue";
+import catalogService from "@/services/Catalog/catalog.service";
 export default {
   name: "LatestReleases",
   components: {
@@ -72,7 +74,24 @@ export default {
   data() {
     return {
       latest_release_bg,
+      websites: [],
     };
+  },
+
+  methods: {
+    async getLatestReleases() {
+      try {
+        const response = await catalogService.getWebsites();
+        this.websites = response.result;
+
+        console.log("resp", response);
+      } catch (error) {
+        console.error("Error while retrieving catalog", error);
+      }
+    },
+  },
+  async created() {
+    this.getLatestReleases();
   },
 };
 </script>

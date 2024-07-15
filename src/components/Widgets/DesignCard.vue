@@ -13,12 +13,16 @@
       </div>
 
       <!-- bg img -->
-      <img :src="this.img" alt="latest_release_react_vue_angular_designs" />
+      <img
+        :src="this.img"
+        alt="latest_release_react_vue_angular_designs"
+        class="thumbnail_img"
+      />
     </div>
     <div class="card-info">
       <div class="upper">
         <span>{{ this.title }}</span>
-        <span v-if="this.showPrice">{{ this.price }}</span>
+        <span v-if="this.showPrice">${{ this.price }}</span>
       </div>
       <div class="lower" v-if="this.showPrice">{{ this.subTitle }}</div>
     </div>
@@ -86,9 +90,10 @@ export default {
       }
     }
 
-    .img {
+    .thumbnail_img {
       width: 100%;
       height: 100%;
+      object-fit: cover;
     }
   }
   .card-info {

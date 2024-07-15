@@ -6,13 +6,13 @@
       type="text"
       id="filename"
       placeholder="React vibrant design"
-      v-model="fileName"
+      v-model="fileData.fileName"
     />
 
     <!-- File Description -->
     <label for="filedescription">File description </label>
     <textarea
-      v-model="fileDescription"
+      v-model="fileData.fileDescription"
       name="filedescription"
       id="filedescription"
       cols="30"
@@ -22,12 +22,17 @@
     <!-- File upload input -->
     <label for="fileupload">File</label>
     <input type="file" @change="handleFileChange" />
+
+    <!-- File thumbnails input -->
+    <label for="thumbnail">Thumbnails</label>
+    <input type="file" @change="handleThumbnailChange" multiple />
+
     <!-- Website asset checkbox -->
     <div class="website_asset_checkbox">
       <label for="website_asset">Website Asset</label>
       <input
         type="checkbox"
-        v-model="isWebsiteAsset"
+        v-model="fileData.isWebsiteAsset"
         name="website_asset"
         id="website_asset"
       />
@@ -35,11 +40,19 @@
 
     <!-- Tags -->
     <label for="tags">Tags</label>
-    <input type="text" placeholder="React, Bootstrap..." v-model="tags" />
+    <input
+      type="text"
+      placeholder="React, Bootstrap..."
+      @change="handleTagsChange"
+    />
 
     <!-- File Category -->
     <label for="filecategory">File Category</label>
-    <select v-model="selectedCategory" name="filecategory" id="filecategory">
+    <select
+      v-model="fileData.selectedCategory"
+      name="filecategory"
+      id="filecategory"
+    >
       <option value="Default">Default</option>
       <option v-for="item of categories" :key="item" :value="item">
         {{ item }}
@@ -50,13 +63,13 @@
       <!-- Price -->
       <div>
         <label for="price">Price</label>
-        <input type="number" v-model="price" />
+        <input type="number" v-model="fileData.price" />
       </div>
 
       <!-- Discount -->
       <div>
         <label for="discount">Discount</label>
-        <input type="number" v-model="discount" />
+        <input type="number" v-model="fileData.discount" />
       </div>
     </div>
     <!-- Tech Stack -->
@@ -82,52 +95,77 @@ export default {
         "Material UI",
         "Bootstrap",
       ],
-      fileName: "",
-      fileDescription: "",
-      selectedFile: null,
-      isWebsiteAsset: false,
-      tags: "",
-      selectedCategory: "Default",
-      selectedTechs: [],
-      price: "",
-      discount: "",
+
+      fileData: {
+        fileName: "",
+        fileDescription: "",
+        selectedFile: null,
+        thumbnails: [],
+        isWebsiteAsset: false,
+        tags: "",
+        selectedCategory: "Default",
+        selectedTechs: [],
+        price: "",
+        discount: "",
+      },
     };
   },
   methods: {
     handleFileChange(event) {
-      this.selectedFile = event.target.files[0];
+      this.fileData.selectedFile = event.target.files[0];
     },
+    handleThumbnailChange(event) {
+      this.fileData.thumbnails = event.target.files;
+    },
+    handleTagsChange(event) {
+      this.fileData.tags = event.target.value.split(",");
+    },
+
     async handleSubmit() {
       // Access your form data here
-      console.log("File Name:", this.fileName);
-      console.log("File Description:", this.fileDescription);
-      console.log("Is Website Asset:", this.isWebsiteAsset);
-      console.log("Tags:", this.tags);
-      console.log("File Category:", this.selectedCategory);
-      console.log("Tech Stack:", this.selectedTechs);
-      console.log("Price", this.price);
-      console.log("Discount", this.discount);
+      console.log("File Data:", this.fileData);
 
       console.log(
         "Total Price",
-        this.price - this.price * (this.discount / 100)
+        this.fileData.price -
+          this.fileData.price * (this.fileData.discount / 100)
       );
 
       try {
         // check if the asset is a website asset or catalog asset.
-        if (this.isWebsiteAsset) {
+        if (this.fileData.isWebsiteAsset) {
+          const {
+            fileName,
+            fileDescription,
+            isWebsiteAsset,
+            tags,
+            selectedCategory,
+            selectedTechs,
+            price,
+            discount,
+          } = this.fileData;
           const fileData = {
-            fileName: this.fileName,
-            fileDescription: this.fileDescription,
-            isWebsiteAsset: this.isWebsiteAsset,
+            fileName,
+            fileDescription,
+            isWebsiteAsset,
+            tags,
+            selectedCategory,
+            selectedTechs,
+            price,
+            discount,
           };
+
           const response = await catalogService.uploadToBucket(
             "website_assets",
-            this.selectedFile,
+            {
+              webFile: this.fileData.selectedFile,
+              thumbnails: this.fileData.thumbnails,
+            },
             fileData
           );
 
           console.log("response", response);
+          alert("Uploaded Successfully");
         } else {
         }
       } catch (error) {
