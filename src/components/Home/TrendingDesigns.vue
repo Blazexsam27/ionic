@@ -2,24 +2,26 @@
   <div class="trending_designs_container">
     <div class="header">Trending Designs</div>
     <MarqueeAnimation class="marq" :pause-on-hover="false">
-      <div class="card" v-for="img in this.marqueeData" :key="img">
-        <img :src="img" alt="trending,free_premium,web,designs" />
+      <div
+        class="card"
+        v-for="item in homePageCards"
+        :key="item.filesUrl.thumbnailUrls[0]"
+      >
+        <img
+          :src="item.filesUrl.thumbnailUrls[0]"
+          alt="trending,free_premium,web,designs"
+        />
 
         <!-- <p>New Design</p> -->
       </div>
     </MarqueeAnimation>
-    <div class="explore">
-      <AnimatedButton
-        text="Explore More"
-        icon="md-keyboarddoublearrowrigh-round"
-      />
-    </div>
   </div>
 </template>
 <script>
 import bundle_ad_bg from "../../assets/images/bundle_ad_bg.jpg";
 import latest_release_bg from "../../assets/images/latest_release_bg.jpg";
 import AnimatedButton from "../Widgets/AnimatedButton.vue";
+import { mapGetters, mapState } from "vuex";
 export default {
   name: "TrendingDesigns",
   components: {
@@ -29,6 +31,10 @@ export default {
     return {
       marqueeData: [bundle_ad_bg, latest_release_bg],
     };
+  },
+  computed: {
+    ...mapState("home", ["loading", "error"]),
+    ...mapGetters("home", ["homePageCards"]),
   },
 };
 </script>
@@ -44,12 +50,15 @@ export default {
   }
 
   .card {
-    width: 300px;
-    height: 250px;
+    width: 350px;
+    height: 320px;
     margin: 0 1rem;
+
     img {
       width: 100%;
       height: 100%;
+      object-fit: contain;
+      aspect-ratio: 16/9;
     }
   }
 

@@ -10,7 +10,7 @@
         on top of Scss, Tailwind css, Bootstrap, React.js, Vue.js, Angular,
         Node.js
       </div>
-      <div class="latest-release">
+      <div class="latest-release" @click="scrollToLatestReleases">
         Checkout latest release
         <v-icon name="md-keyboarddoublearrowright-round" />
       </div>
@@ -40,6 +40,11 @@
 <script>
 export default {
   name: "NavbarDefaultContent",
+  methods: {
+    scrollToLatestReleases() {
+      this.$emit("scrollToLatestReleases");
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>

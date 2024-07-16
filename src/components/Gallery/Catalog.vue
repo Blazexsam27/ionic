@@ -18,39 +18,13 @@
       </span>
     </div>
     <div class="content">
-      <div class="item">
+      <div class="item" v-for="item of homePageCards">
         <DesignCard
-          title="Sample Design"
-          subTitle="Fullstack responsive design"
-          price="59"
+          :title="item.fileData.fileName"
+          subTitle="Premium 5 dashboard templates"
+          :price="item.fileData.price"
+          :img="item.filesUrl?.thumbnailUrls[0]"
           :click="() => this.navigateToDetailsPage('10')"
-        />
-      </div>
-
-      <div class="item">
-        <DesignCard
-          title="Sample Design"
-          subTitle="Fullstack responsive design"
-          price="59"
-          :click="() => this.navigateToDetailsPage('11')"
-        />
-      </div>
-
-      <div class="item">
-        <DesignCard
-          title="Sample Design"
-          subTitle="Fullstack responsive design"
-          price="59"
-          :click="() => this.navigateToDetailsPage('12')"
-        />
-      </div>
-
-      <div class="item">
-        <DesignCard
-          title="Sample Design"
-          subTitle="Fullstack responsive design"
-          price="59"
-          :click="() => this.navigateToDetailsPage('13')"
         />
       </div>
     </div>
@@ -58,6 +32,7 @@
 </template>
 <script>
 import DesignCard from "../Widgets/DesignCard.vue";
+import { mapGetters, mapState } from "vuex";
 export default {
   name: "Catalog",
   components: {
@@ -67,6 +42,10 @@ export default {
     return {
       sortDropdownActive: true,
     };
+  },
+  computed: {
+    ...mapState("home", ["loading", "error"]),
+    ...mapGetters("home", ["homePageCards"]),
   },
   methods: {
     navigateToDetailsPage(id) {
@@ -132,6 +111,7 @@ export default {
     .item {
       width: 49%;
       height: 350px;
+      cursor: pointer;
     }
   }
 }

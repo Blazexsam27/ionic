@@ -1,9 +1,11 @@
 <template>
   <div class="home-container">
-    <IntroComponent />
+    <IntroComponent
+      @scrollToLatestReleases="scrollToSection('latestReleases')"
+    />
     <QuickAccessNav />
     <BundleAds />
-    <LatestReleases />
+    <LatestReleases ref="latestReleases" />
     <TrendingDesigns />
     <PopularBundles />
     <BlogAd />
@@ -30,6 +32,12 @@ export default {
     PopularBundles,
     BlogAd,
     PopularFreeProducts,
+  },
+
+  methods: {
+    scrollToSection(sectionRef) {
+      this.$refs[sectionRef].$el.scrollIntoView({ behavior: "smooth" });
+    },
   },
 };
 </script>

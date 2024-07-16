@@ -4,23 +4,23 @@
     <div class="popular_free_products">
       <div class="left" id="free_prods">
         <div class="upper">
-          <div>
+          <div v-for="item of homePageCards.slice(0, 2)">
             <DesignCard
-              title="Material Dashboard Design"
+              :title="item.fileData.fileName"
               subTitle="Premium 5 dashboard templates"
-              price="$29"
+              :price="item.fileData.price"
+              :img="item.filesUrl?.thumbnailUrls[0]"
             />
-          </div>
-          <div>
-            <DesignCard />
           </div>
         </div>
         <div class="lower">
-          <div>
-            <DesignCard />
-          </div>
-          <div>
-            <DesignCard />
+          <div v-for="item of homePageCards.slice(2, 4)">
+            <DesignCard
+              :title="item.fileData.fileName"
+              subTitle="Premium 5 dashboard templates"
+              :price="item.fileData.price"
+              :img="item.filesUrl?.thumbnailUrls[0]"
+            />
           </div>
         </div>
       </div>
@@ -75,6 +75,7 @@ onMounted(() => {
 import DesignCard from "../Widgets/DesignCard.vue";
 import CurveButton from "../Widgets/CurveButton.vue";
 import { ref, onMounted } from "vue";
+import { mapGetters, mapState } from "vuex";
 export default {
   name: "PopularFreeProducts",
   components: {
@@ -82,6 +83,10 @@ export default {
   },
   data() {
     return {};
+  },
+  computed: {
+    ...mapState("home", ["loading", "error"]),
+    ...mapGetters("home", ["homePageCards"]),
   },
 };
 </script>

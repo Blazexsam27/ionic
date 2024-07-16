@@ -24,7 +24,7 @@
       </div>
       <div class="right">
         <div class="upper_row">
-          <div v-for="item of websites">
+          <div v-for="item of homePageCards.slice(0, 2)">
             <DesignCard
               :title="item.fileData.fileName"
               subTitle="Premium 5 dashboard templates"
@@ -32,27 +32,14 @@
               :img="item.filesUrl?.thumbnailUrls[0]"
             />
           </div>
-          <div>
-            <DesignCard
-              title="Material Dashboard Design"
-              subTitle="Premium 5 dashboard templates"
-              price="$29"
-            />
-          </div>
         </div>
         <div class="lower_row">
-          <div>
+          <div v-for="item of homePageCards.slice(2, 4)">
             <DesignCard
-              title="Material Dashboard Design"
+              :title="item.fileData.fileName"
               subTitle="Premium 5 dashboard templates"
-              price="$29"
-            />
-          </div>
-          <div>
-            <DesignCard
-              title="Material Dashboard Design"
-              subTitle="Premium 5 dashboard templates"
-              price="$29"
+              :price="item.fileData.price"
+              :img="item.filesUrl?.thumbnailUrls[0]"
             />
           </div>
         </div>
@@ -65,6 +52,7 @@ import DesignCard from "../Widgets/DesignCard.vue";
 import latest_release_bg from "../../assets/images/latest_release_bg.jpg";
 import CurveButton from "../Widgets/CurveButton.vue";
 import catalogService from "@/services/Catalog/catalog.service";
+import { mapGetters, mapState } from "vuex";
 export default {
   name: "LatestReleases",
   components: {
@@ -74,25 +62,13 @@ export default {
   data() {
     return {
       latest_release_bg,
-      websites: [],
     };
   },
-
-  methods: {
-    async getLatestReleases() {
-      try {
-        const response = await catalogService.getWebsites();
-        this.websites = response.result;
-
-        console.log("resp", response);
-      } catch (error) {
-        console.error("Error while retrieving catalog", error);
-      }
-    },
+  computed: {
+    ...mapState("home", ["loading", "error"]),
+    ...mapGetters("home", ["homePageCards"]),
   },
-  async created() {
-    this.getLatestReleases();
-  },
+  methods: {},
 };
 </script>
 <style lang="scss" scoped>

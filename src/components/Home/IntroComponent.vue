@@ -66,7 +66,10 @@
       </div>
     </nav>
     <component v-if="this.content" :is="this.content" />
-    <NavbarDefaultContent v-else />
+    <NavbarDefaultContent
+      @scrollToLatestReleases="scrollToSection('latestReleases')"
+      v-else
+    />
   </div>
 </template>
 <script>
@@ -75,6 +78,7 @@ import authService from "../../services/auth/auth.service";
 import userService from "../../services/user/User.service";
 import cookiesUtils from "../../utils/CookiesUtils";
 import localStorageUtils from "../../utils/LocalStorageUtils";
+import { mapState, mapGetters } from "vuex";
 export default {
   name: "IntroSectionComponent",
   props: {
@@ -93,6 +97,10 @@ export default {
       },
       showDropdown: false,
     };
+  },
+  computed: {
+    ...mapState("home", ["loading", "error"]),
+    ...mapGetters("home", ["homePageCards"]),
   },
   components: {
     NavbarDefaultContent,
@@ -146,9 +154,12 @@ export default {
         this.showDropdown = false;
       }
     },
+
+    // setup up the store with required homepage cards
   },
   async created() {
     this.checkAuthentication();
+    this.$store.dispatch("home/setHomePageCards");
   },
   beforeDestroy() {
     document.removeEventListener("click", this.closeDropdownOnClickOutside);
