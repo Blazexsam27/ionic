@@ -8,7 +8,7 @@ import {
   browserSessionPersistence,
   onAuthStateChanged,
 } from "firebase/auth";
-import userService from "../user/User.service";
+import userService from "../user/user.service";
 import cookiesUtils from "@/utils/CookiesUtils";
 
 class AuthService {

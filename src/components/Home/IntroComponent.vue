@@ -75,7 +75,7 @@
 <script>
 import NavbarDefaultContent from "./NavbarDefaultContent.vue";
 import authService from "../../services/auth/auth.service";
-import userService from "../../services/user/User.service";
+import userService from "../../services/user/user.service";
 import cookiesUtils from "../../utils/CookiesUtils";
 import localStorageUtils from "../../utils/LocalStorageUtils";
 import { mapState, mapGetters } from "vuex";
