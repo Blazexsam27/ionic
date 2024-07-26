@@ -3,6 +3,7 @@ import catalogService from "@/services/Catalog/catalog.service";
 const state = {
   bundleCardBriefs: [],
   homePageCards: [],
+  galleryPageCards: [],
   loading: false,
   error: null,
 };
@@ -12,6 +13,9 @@ const mutations = {
   // gets all the required cards which are to be shown on homepage
   setHomePageCards(state, items) {
     state.homePageCards = items;
+  },
+  setGalleryPageCards(state, items) {
+    state.galleryPageCards = items;
   },
   setLoading(state, loading) {
     state.loading = loading;
@@ -26,12 +30,25 @@ const actions = {
     commit("setBundleCardBreifs");
   },
   // gets all the required cards which are to be shown on homepage
-  async setHomePageCards({ commit }) {
+  async setHomePageCards({ commit }, filter) {
+    commit("setLoading", true);
+    commit("setError", null);
+    try {
+      const response = await catalogService.getWebsites(filter);
+      commit("setHomePageCards", response.result);
+    } catch (error) {
+      commit("setError", error);
+    } finally {
+      commit("setLoading", false);
+    }
+  },
+  // get gallary cards
+  async setGalleryPageCards({ commit }) {
     commit("setLoading", true);
     commit("setError", null);
     try {
       const response = await catalogService.getWebsites();
-      commit("setHomePageCards", response.result);
+      commit("setGalleryPageCards", response.result);
     } catch (error) {
       commit("setError", error);
     } finally {

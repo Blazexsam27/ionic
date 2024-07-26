@@ -7,9 +7,9 @@
         <v-icon v-else name="md-keyboardarrowup-sharp" />
       </div>
       <div class="list" :class="{ open: this.showLayouts }">
-        <span>Dashboard</span>
-        <span>Landing Page</span>
-        <span>Portfolio</span>
+        <span @click="categoryBasedFilter('dashboard')">Dashboard</span>
+        <span @click="categoryBasedFilter('landingPage')">Landing Page</span>
+        <span @click="categoryBasedFilter('portfolio')">Portfolio</span>
       </div>
     </div>
 
@@ -60,6 +60,12 @@ export default {
       showFrameworks: false,
       showDesignSystems: false,
     };
+  },
+  methods: {
+    categoryBasedFilter(filterValue) {
+      try {
+      } catch (error) {}
+    },
   },
 };
 </script>
@@ -113,6 +119,14 @@ export default {
       color: $text-black-08;
       overflow: hidden;
       width: 100%;
+
+      span {
+        cursor: pointer;
+
+        &:hover {
+          color: $purple;
+        }
+      }
     }
   }
 

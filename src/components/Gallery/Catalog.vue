@@ -24,7 +24,7 @@
           subTitle="Premium 5 dashboard templates"
           :price="item.fileData.price"
           :img="item.filesUrl?.thumbnailUrls[0]"
-          :click="() => this.navigateToDetailsPage('10')"
+          :click="() => this.navigateToDetailsPage(item.uuid)"
         />
       </div>
     </div>
@@ -50,9 +50,6 @@ export default {
   methods: {
     navigateToDetailsPage(id) {
       const type = this.$route.params.type;
-      // const id = this.$route.params.id;
-
-      console.log("Type", type, "Id", id);
       this.$router.push(`/gallery/${type}/${id}`);
     },
   },
@@ -104,12 +101,12 @@ export default {
     }
   }
   .content {
-    @include dflex($justify: normal, $align: normal);
+    @include dflex($justify: normal, $align: normal, $gap: 2.8rem 1.5rem);
     flex-wrap: wrap;
     min-height: 100vh;
     padding: 10px 0 2rem 5rem;
     .item {
-      width: 49%;
+      width: 47%;
       height: 350px;
       cursor: pointer;
     }

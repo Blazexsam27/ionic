@@ -1,14 +1,17 @@
 <template>
-  <div class="top_section_container">
+  <div class="top_section_container" v-if="!loading && productData">
     <div class="left">
-      <img :src="this.test_card_img" alt="Bootstrap, React.js, Vue.js, Free" />
+      <img
+        :src="productData.filesUrl.thumbnailUrls[0]"
+        alt="Bootstrap, React.js, Vue.js, Free"
+      />
 
       <div class="btns"></div>
     </div>
     <div class="right">
-      <div class="header">Bootstrap Material Design V2</div>
+      <div class="header">{{ productData.fileData.fileName }}</div>
       <div class="subheader">
-        An authentic and elegant simple design template
+        {{ productData.fileData.fileDescription }}
       </div>
       <div class="ratings_reviews">
         <span class="stars">
@@ -28,7 +31,7 @@
       <hr class="v_line" />
       <div class="btns">
         <div class="buy_now">
-          <CurveButton text="Buy Now · $49.99" />
+          <CurveButton :text="`Buy Now · $${productData.fileData.price}`" />
         </div>
         <div class="free_demo_template">
           <BorderButton text="Free Demo Template" />
@@ -36,27 +39,61 @@
       </div>
     </div>
   </div>
+
+  <div class="_loader" v-else-if="!loading">
+    <PulseLoader color="white" />
+  </div>
 </template>
 <script>
 import test_card_img from "../../assets/images/test_card_img.jpg";
 import CurveButton from "../Widgets/CurveButton.vue";
 import BorderButton from "../Widgets/BorderButton.vue";
+import { mapGetters, mapState } from "vuex";
+import PulseLoader from "vue-spinner/src/PulseLoader.vue";
+
 export default {
   name: "TopSection",
+  props: {
+    img: {
+      type: String,
+      default: "#",
+    },
+    title: {
+      type: String,
+      default: "#",
+    },
+    description: {
+      type: String,
+      default: "#",
+    },
+  },
   data() {
     return {
       test_card_img,
     };
   },
+  computed: {
+    ...mapGetters("home", ["loading", "error"]),
+    ...mapState("home", ["homePageCards"]),
+
+    productData() {
+      this.id = this.$route.params.id;
+      const data = this.homePageCards.filter((item) => item.uuid === this.id);
+      return data[0];
+    },
+  },
+
   components: {
     CurveButton,
     BorderButton,
+    PulseLoader,
   },
 };
 </script>
 <style lang="scss" scoped>
 .top_section_container {
   @include dflex($gap: 5rem);
+  margin-top: 4rem;
   .left {
     @include dflex($justify: center, $align: end, $flex: column);
     width: 50%;
@@ -88,6 +125,8 @@ export default {
         $shadow: none,
         $transform: uppercase
       );
+      width: 30rem;
+      text-align: center;
     }
     .ratings_reviews {
       @include dflex($gap: 0.2rem);
@@ -126,6 +165,12 @@ export default {
     .btns {
       @include dflex($gap: 3rem);
     }
+  }
+
+  ._loader {
+    position: fixed;
+    top: 50%;
+    left: 50%;
   }
 }
 </style>

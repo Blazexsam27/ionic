@@ -19,8 +19,10 @@ export default {
   data() {
     return {
       topSection: TopSection,
+      id: "",
     };
   },
+
   components: {
     IntroComponent,
     TopSection,
