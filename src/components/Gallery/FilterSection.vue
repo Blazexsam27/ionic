@@ -7,9 +7,11 @@
         <v-icon v-else name="md-keyboardarrowup-sharp" />
       </div>
       <div class="list" :class="{ open: this.showLayouts }">
-        <span>Dashboard</span>
-        <span>Landing Page</span>
-        <span>Portfolio</span>
+        <span @click="websiteCategoryBasedFilter('dashboard')">Dashboard</span>
+        <span @click="websiteCategoryBasedFilter('landingPage')"
+          >Landing Page</span
+        >
+        <span @click="websiteCategoryBasedFilter('portfolio')">Portfolio</span>
       </div>
     </div>
 
@@ -20,15 +22,20 @@
         <v-icon v-else name="md-keyboardarrowup-sharp" />
       </div>
       <div class="list" :class="{ open: this.showFrameworks }">
-        <span v-for="item of this.frameworks" :key="item">{{ item }}</span>
+        <span
+          @click="frameworkBasedFilter(item)"
+          v-for="item of this.frameworks"
+          :key="item"
+          >{{ item }}</span
+        >
       </div>
     </div>
 
-    <div
-      class="design_systems_container"
-      @click="this.showDesignSystems = !this.showDesignSystems"
-    >
-      <div class="upper">
+    <div class="design_systems_container">
+      <div
+        class="upper"
+        @click="this.showDesignSystems = !this.showDesignSystems"
+      >
         <span>Design System</span>
         <v-icon
           v-if="this.showDesignSystems"
@@ -37,7 +44,12 @@
         <v-icon v-else name="md-keyboardarrowup-sharp" />
       </div>
       <div class="list" :class="{ open: this.showDesignSystems }">
-        <span v-for="item of this.design_systems" :key="item">{{ item }}</span>
+        <span
+          @click="this.designSystemFilter(item)"
+          v-for="item of this.design_systems"
+          :key="item"
+          >{{ item }}</span
+        >
       </div>
     </div>
   </div>
@@ -59,7 +71,37 @@ export default {
       showLayouts: false,
       showFrameworks: false,
       showDesignSystems: false,
+
+      filteredCards: [],
     };
+  },
+  methods: {
+    websiteCategoryBasedFilter(filterValue) {
+      try {
+        this.$store.dispatch(
+          "home/setCardsByWebsiteCategoryFilter",
+          filterValue
+        );
+      } catch (error) {
+        console.error("Error while filtering cards", error);
+      }
+    },
+
+    frameworkBasedFilter(filterValue) {
+      try {
+        this.$store.dispatch("home/setCardsByFrameworkFilter", filterValue);
+      } catch (error) {
+        console.error("Error while filtering cards", error);
+      }
+    },
+
+    designSystemFilter(filterValue) {
+      try {
+        this.$store.dispatch("home/setCardsByDesignSystemFilter", filterValue);
+      } catch (error) {
+        console.error("Error while filtering cards", error);
+      }
+    },
   },
 };
 </script>
@@ -113,6 +155,14 @@ export default {
       color: $text-black-08;
       overflow: hidden;
       width: 100%;
+
+      span {
+        cursor: pointer;
+
+        &:hover {
+          color: $purple;
+        }
+      }
     }
   }
 
@@ -141,9 +191,10 @@ export default {
   .design_systems_container {
     @include accordion_animation(0px, 190px, design_systems);
     .list {
-      animation: accordion-expand-design_systems 0.5s forwards;
+      animation: accordion-collapse-design_systems 0.5s forwards;
+
       &.open {
-        animation: accordion-collapse-design_systems 0.5s forwards;
+        animation: accordion-expand-design_systems 0.5s forwards;
       }
     }
   }

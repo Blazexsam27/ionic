@@ -12,6 +12,7 @@ import {
   query,
 } from "firebase/firestore";
 import dateTimeUtils from "@/utils/DateTimeUtils";
+import { v4 as uuidv4 } from "uuid";
 
 class CatalogService {
   /**
@@ -80,7 +81,12 @@ class CatalogService {
       const collectionRef = collection(firestoreDb, collectionName);
       const unixTimeStamp = dateTimeUtils.getUnixTimeStamp();
 
-      addDoc(collectionRef, { filesUrl, fileData, unixTimeStamp });
+      addDoc(collectionRef, {
+        filesUrl,
+        fileData,
+        unixTimeStamp,
+        uuid: uuidv4(),
+      });
     } catch (error) {
       console.error("Error occured while saving url to firestore", error);
       throw new Error("Error occured while saving url to firestore", error);
@@ -123,7 +129,6 @@ class CatalogService {
         startAt(startIndex)
       );
 
-      console.log("query", q);
       // Make firestore call
       const querySnapshot = await getDocs(q);
       let result = [];

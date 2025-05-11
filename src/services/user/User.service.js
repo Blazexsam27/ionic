@@ -10,6 +10,7 @@ import {
   endBefore,
   query,
 } from "firebase/firestore";
+import { v4 as uuidv4 } from "uuid";
 
 class UserService {
   createUser = async (userData) => {
@@ -35,6 +36,7 @@ class UserService {
           email: userData.email,
           displayName: userData.displayName,
           photoUrl: userData.photoURL ? userData.photoURL : "#default",
+          uuid: uuidv4(),
         });
       }
     } catch (error) {

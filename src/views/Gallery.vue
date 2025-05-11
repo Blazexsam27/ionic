@@ -37,7 +37,7 @@ export default {
   height: fit-content;
 
   .content {
-    @include dflex;
+    @include dflex($align: start);
     width: 85%;
     height: fit-content;
     margin-top: 3rem;
@@ -45,6 +45,7 @@ export default {
     .left {
       width: 16%;
       height: 100vh;
+      margin-top: 5rem;
     }
     .right {
       width: 80%;

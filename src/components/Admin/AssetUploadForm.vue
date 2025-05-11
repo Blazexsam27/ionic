@@ -38,13 +38,34 @@
       />
     </div>
 
+    <!-- Tech used -->
+    <label for="tags">Tech used</label>
+    <input
+      type="text"
+      placeholder="React, Bootstrap..."
+      @change="handleTechUsedChange"
+    />
+
     <!-- Tags -->
     <label for="tags">Tags</label>
     <input
       type="text"
-      placeholder="React, Bootstrap..."
+      placeholder="Webapp, Portfolio..."
       @change="handleTagsChange"
     />
+
+    <!-- Website Category (Landing Page, Component Gallery, ) -->
+    <label for="websitecategory">Website Category</label>
+    <select
+      v-model="fileData.websiteCategory"
+      name="websitecategory"
+      id="websitecategory"
+    >
+      <option value="Default">Default</option>
+      <option v-for="item of websiteCategories" :key="item" :value="item">
+        {{ item }}
+      </option>
+    </select>
 
     <!-- File Category -->
     <label for="filecategory">File Category</label>
@@ -82,11 +103,20 @@
 
 <script>
 import catalogService from "@/services/Catalog/catalog.service";
+
 export default {
   name: "AssetUploadForm",
+
   data() {
     return {
       categories: ["Material", "Dark", "Soft", "Light", "Modern", "Argon"],
+      websiteCategories: [
+        "dashboard",
+        "landingPage",
+        "portfolio",
+        "blog",
+        "componentGallery",
+      ],
       techs: [
         "React",
         "Vue",
@@ -103,8 +133,9 @@ export default {
         thumbnails: [],
         isWebsiteAsset: false,
         tags: "",
+        websiteCategory: "",
         selectedCategory: "Default",
-        selectedTechs: [],
+        techUsed: [],
         price: "",
         discount: "",
       },
@@ -120,7 +151,9 @@ export default {
     handleTagsChange(event) {
       this.fileData.tags = event.target.value.split(",");
     },
-
+    handleTechUsedChange(event) {
+      this.fileData.techUsed = event.target.value.split(",");
+    },
     async handleSubmit() {
       // Access your form data here
       console.log("File Data:", this.fileData);
@@ -179,7 +212,7 @@ export default {
 .asset_upload_form {
   @include dflex($justify: normal, $align: normal, $flex: column);
   @include boxshadow;
-  width: 40%;
+  width: 65%;
   height: fit-content;
   padding: 15px 20px;
 
@@ -220,4 +253,3 @@ export default {
   }
 }
 </style>
-@/services/Catalog/firebase.service

@@ -227,7 +227,7 @@ export default {
         .user_auth {
           position: relative;
 
-          @include accordion_animation(0px, 145px, nav_dropdown);
+          @include accordion_animation(0px, 165px, nav_dropdown);
           .dropdown {
             animation: accordion-expand-nav_dropdown 0.5s forwards;
             &.open {
@@ -242,7 +242,7 @@ export default {
             background-color: $white;
             top: 5rem;
             width: 120px;
-            height: 145px;
+            height: 165px;
             border-radius: 7px;
             color: $orange-red;
             overflow: hidden;
