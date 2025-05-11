@@ -7,6 +7,7 @@ import { OhVueIcon, addIcons } from "oh-vue-icons";
 import { firebaseApp } from "./firebase";
 import Vue3Marquee from "vue3-marquee";
 import store from "./store/index";
+import "./assets/style.css";
 
 import {
   LaCubesSolid,

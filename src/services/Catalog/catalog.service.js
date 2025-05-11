@@ -129,7 +129,6 @@ class CatalogService {
         startAt(startIndex)
       );
 
-      console.log("query", q);
       // Make firestore call
       const querySnapshot = await getDocs(q);
       let result = [];

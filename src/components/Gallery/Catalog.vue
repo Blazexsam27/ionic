@@ -18,7 +18,11 @@
       </span>
     </div>
     <div class="content">
-      <div class="item" v-for="item of homePageCards">
+      <div
+        v-if="this.galleryPageCards.length !== 0"
+        class="item"
+        v-for="item of galleryPageCards"
+      >
         <DesignCard
           :title="item.fileData.fileName"
           subTitle="Premium 5 dashboard templates"
@@ -26,6 +30,10 @@
           :img="item.filesUrl?.thumbnailUrls[0]"
           :click="() => this.navigateToDetailsPage(item.uuid)"
         />
+      </div>
+
+      <div v-else class="flex justify-center w-full font-bold text-2xl my-5">
+        No items found
       </div>
     </div>
   </div>
@@ -45,13 +53,16 @@ export default {
   },
   computed: {
     ...mapState("home", ["loading", "error"]),
-    ...mapGetters("home", ["homePageCards"]),
+    ...mapGetters("home", ["galleryPageCards"]),
   },
   methods: {
     navigateToDetailsPage(id) {
       const type = this.$route.params.type;
       this.$router.push(`/gallery/${type}/${id}`);
     },
+  },
+  async created() {
+    this.$store.dispatch("home/setGalleryPageCards");
   },
 };
 </script>

@@ -112,10 +112,10 @@ export default {
       categories: ["Material", "Dark", "Soft", "Light", "Modern", "Argon"],
       websiteCategories: [
         "dashboard",
-        "landing page",
+        "landingPage",
         "portfolio",
         "blog",
-        "component gallery",
+        "componentGallery",
       ],
       techs: [
         "React",
